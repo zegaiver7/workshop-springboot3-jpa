@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +28,9 @@ public class User implements Serializable{
 	private String phone;
 	private String password;
 	
+	@JsonIgnore //Anotation para evitar problema de associação de mão dupla com pedido, pois ...
 	@OneToMany(mappedBy = "client")    //Anotation do lado 1 para muitos caso se queira acessar o usuário ja com os pedidos
-	private List<Order> orders = new ArrayList<>();
+	private List<Order> orders = new ArrayList<>(); //...Dentro do usuário eu tenho uma lista de produtos
 	public User(){
 	}
 

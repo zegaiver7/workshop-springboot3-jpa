@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +25,14 @@ public class Order implements Serializable{
 	@Id                      //Anotation que fala que o campo abaixo é chave primária
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  //Anotation que fala que a chave é autoinc
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT") //Anotation para garantir que a coluna seja mostrada no formato ISO 8601
 	private Instant moment;
 	
+	//@JsonIgnore pode colocar aqui...e tirar do user, se quiser traser clientes e todos seus pedidos
 	@ManyToOne
 	@JoinColumn(name = "client_id")
-	private User client;
+	private User client;  //Aqui dentro do pedido(Order) nos temos o usuário(client)
 
 	public Order() {
 	}
