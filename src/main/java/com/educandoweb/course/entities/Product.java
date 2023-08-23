@@ -9,6 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -26,7 +29,9 @@ public class Product implements Serializable{
 	private Double price;
 	private String imgUrl;
 	
-	@Transient
+	@ManyToMany  //Para implementar muitos para muitos com tabela de associação
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"),inverseJoinColumns = @JoinColumn(name = "category_id")) //Indica qual vai ser o nome da tabela e quais as chaves para associar produto e categoria
+	//e agora na classe category vamos colocar uma referencia para o mapeamento que acabamos de fazer
 	private Set<Category> categories = new HashSet<>(); //Já instanciando aqui, não sera incluida no construtor com argumentos
 
 	public Product() {
