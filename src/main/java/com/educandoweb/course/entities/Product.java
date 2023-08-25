@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -34,6 +37,11 @@ public class Product implements Serializable{
 	//e agora na classe category vamos colocar uma referencia para o mapeamento que acabamos de fazer
 	private Set<Category> categories = new HashSet<>(); //Já instanciando aqui, não sera incluida no construtor com argumentos
 
+	//Anotation para mapear que um pedido(Order) terá vários items (OrderItem) ...
+	//mapeado por (OrderItemPK id) de OrderItem que tem a chave order_id e product_id da classe OrderItemPK...e neste caso usamos id.order que busca order_id
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();  //Atributo que será usado para trazer os ítems do pedido (Order)
+	
 	public Product() {
 	}
 
@@ -90,6 +98,16 @@ public class Product implements Serializable{
 		return categories;
 	}
 
+	@JsonIgnore
+	public Set<Order> getOrders(){
+		Set<Order> set = new HashSet<>(); //aqui um set vazio que será alimentado no laço
+		//e vamos percorrer cada objeto do tipo "OrderItem" x contido na minha lista de "items" que foram associadas ao meu produto
+        for (OrderItem x : items) {
+        	set.add(x.getOrder());   //Adiciono o objeto Order de x, pela função getOrder
+        }
+		return set;                 //E retorno como resultado esta coleção
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
