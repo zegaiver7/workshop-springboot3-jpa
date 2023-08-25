@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.educandoweb.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ public class OrderItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId    //Esta é uma chave primária que não tem autoinc, composta de dois  (product_id e order_id) no banco, e aqui ela é representada por uma classe auxiliar
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK(); //Tem de instanciar, pois vem de uma classe auxiliar composta
 	
 	private Integer quantity;
 	private Double price;
@@ -32,6 +33,7 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	@JsonIgnore  //Para evitar o erro de mão dupla entre Order e OrderItem
 	public Order getOrder() {                 // Aqui, colocamos manualmente os gets e sets de
 		return id.getOrder();                 // Order...
 	}                                         //

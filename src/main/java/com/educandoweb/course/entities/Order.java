@@ -2,9 +2,12 @@ package com.educandoweb.course.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.educandoweb.course.entities.enums.OrderStatus;
+import com.educandoweb.course.entities.pk.OrderItemPK;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
@@ -13,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity                      //Anotation que fala pra converter a entidade para tabela
@@ -36,6 +40,11 @@ public class Order implements Serializable{
 	@JoinColumn(name = "client_id")
 	private User client;  //Aqui dentro do pedido(Order) nos temos o usuário(client)
 
+	//Anotation para mapear que um pedido(Order) terá vários items (OrderItem) ...
+	//mapeado por (OrderItemPK id) de OrderItem que tem a chave order_id e product_id da classe OrderItemPK...e neste caso usamos id.order que busca order_id
+	@OneToMany(mappedBy = "id.order") 
+	private Set<OrderItem> items = new HashSet<>();  //Atributo que será usado para trazer os ítems do pedido (Order)
+	
 	public Order() {
 	}
 
@@ -85,6 +94,10 @@ public class Order implements Serializable{
 		this.client = client;
 	}
 
+	public Set<OrderItem> getItems() { //para os ítems de pedido
+		return items;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
