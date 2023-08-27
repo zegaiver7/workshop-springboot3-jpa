@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.educandoweb.course.entities.Category;
 import com.educandoweb.course.entities.Order;
 import com.educandoweb.course.entities.OrderItem;
+import com.educandoweb.course.entities.Payment;
 import com.educandoweb.course.entities.Product;
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.entities.enums.OrderStatus;
@@ -81,6 +82,11 @@ public class TestConfig implements CommandLineRunner { // ComandLineRunner para 
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		
 		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+		
+		Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"),o1); //Estou fazendo o pagamento do pedido(Order) o1
+		//Para salvar um objeto dependente numa relação um para um voce não usa o repository do próprio objeto
+		o1.setPayment(pay1); //...Primeiro associamos o Order o1 ao Payment pay1
+		orderRepository.save(o1); //...E salvamos novamente o pedido(Order) o1, usando o seu repositório
 	}
 
 }

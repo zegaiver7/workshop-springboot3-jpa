@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.educandoweb.course.entities.enums.OrderStatus;
-import com.educandoweb.course.entities.pk.OrderItemPK;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity                      //Anotation que fala pra converter a entidade para tabela
@@ -44,6 +45,11 @@ public class Order implements Serializable{
 	//mapeado por (OrderItemPK id) de OrderItem que tem a chave order_id e product_id da classe OrderItemPK...e neste caso usamos id.order que busca order_id
 	@OneToMany(mappedBy = "id.order") 
 	private Set<OrderItem> items = new HashSet<>();  //Atributo que será usado para trazer os ítems do pedido (Order)
+	
+	//Aqui, para o relacionamento um para um nesta classe(Order) que é a principal,
+	//O mapeamento fica assim...
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+	private Payment payment;
 	
 	public Order() {
 	}
@@ -92,6 +98,14 @@ public class Order implements Serializable{
 
 	public void setClient(User client) {
 		this.client = client;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	public Set<OrderItem> getItems() { //para os ítems de pedido
