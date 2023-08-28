@@ -31,4 +31,8 @@ public class UserService {
 		return repository.save(obj); //Este metodo já retorna o objeto salvo (neste caso a variavel "obj" do tipo User que foi passada como parâmetro do metodo
 	}
 	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
 }

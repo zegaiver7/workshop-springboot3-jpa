@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,13 @@ public class UserResource {
 		//return ResponseEntity.ok().body(obj); //Desta maneira dá o resultado 200 created, e queremos o 201
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
+	}
+	
+	//Aqqui o endpoint de deleção void , porque não vai retornar nenhum corpo
+	@DeleteMapping(value = "/{id}") //Anotation que serve para deletar no padrão Rest 
+	public ResponseEntity<Void> delete(@PathVariable Long id){ //Anotation para que este Long id seja reconhecido como uma variavel da minha URL.
+		service.delete(id);
+		return ResponseEntity.noContent().build();	
 	}
 	
 }
