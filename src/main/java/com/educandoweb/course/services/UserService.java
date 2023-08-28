@@ -25,4 +25,10 @@ public class UserService {
 		Optional<User> obj = repository.findById(id);
 		return obj.get();
 	}
+	
+	//Aqui no serviçõ, vai ficar o metodo análogo ao insert que fariamos no banco de dados
+	public User insert(User obj) {
+		return repository.save(obj); //Este metodo já retorna o objeto salvo (neste caso a variavel "obj" do tipo User que foi passada como parâmetro do metodo
+	}
+	
 }
