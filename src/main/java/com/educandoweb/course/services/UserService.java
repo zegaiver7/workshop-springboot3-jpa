@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
 // ... @Component  //Anotation que registra a classe como um componente do spring, e ele poderá ser injetado automaticamente como dependência
 // ... @Repository //Anotation que registra um repositório do spring...
@@ -23,7 +24,8 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		//return obj.get();  ...antes do tratamento de excessões
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)); //Tente fazer o get, senão trate com a excessão personalizada
 	}
 	
 	//Aqui no serviçõ, vai ficar o metodo análogo ao insert que fariamos no banco de dados
