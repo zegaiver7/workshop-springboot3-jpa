@@ -52,7 +52,7 @@ public class UserResource {
 	@DeleteMapping(value = "/{id}") //Anotation que serve para deletar no padrão Rest 
 	public ResponseEntity<Void> delete(@PathVariable Long id){ //Anotation para que este Long id seja reconhecido como uma variavel da minha URL.
 		service.delete(id);
-		return ResponseEntity.noContent().build();	
+		return ResponseEntity.noContent().build();
 	}
 	
 	//Anotation para atualizar no padrão Rest
